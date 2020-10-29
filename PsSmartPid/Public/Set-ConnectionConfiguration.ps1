@@ -52,7 +52,7 @@ function Set-ConnectionConfiguration {
         $configurationHash = @{Version = $version
             MQTTServer                 = $MQTTServer
             Credential                 = $Credential
-            SmartPIDSerial                = $SmartPIDSerial
+            DeviceID                   = Get-DeviceID $SmartPIDSerial
         }
         Export-Configuration -InputObject $configurationHash
 
