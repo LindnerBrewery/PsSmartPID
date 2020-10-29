@@ -1,11 +1,11 @@
-﻿function Start-SmartPidPump {
+﻿function Stop-SmartPid {
     [CmdletBinding()]
     param ()
 
     begin { }
 
     process {
-        $hash = @{pump = "on"}
+        $hash = @{stop = $true}
         Invoke-SmartPidPublish -hash $hash
     }
     end { }

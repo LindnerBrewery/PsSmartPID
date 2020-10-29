@@ -1,8 +1,10 @@
 ﻿function Start-SmartPidLogging {
     param (
     )
+    Get-EventSubscriber | Where-Object EventName -eq 'MqttMsgPublishReceived' | Unregister-Event
+
     $Global:current = [System.Collections.ArrayList]::new()
-    $null = $MqttClient.Subscribe("smartpid/homebrewing/6e945ef5af6404/#", 0)
+    $null = $MqttClient.Subscribe("smartpid/homebrewing/$ID/#", 0)
     $null = Register-ObjectEvent -InputObject $MqttClient -EventName MqttMsgPublishReceived -Action {
         $obj = '' | Select-Object Timestamp, topic, content
         $obj.Timestamp = Get-Date #(Get-Date -Format "yyy-MM-ddTHH:mm:ss.ms000K")
