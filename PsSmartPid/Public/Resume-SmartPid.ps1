@@ -1,11 +1,6 @@
 ﻿function Resume-SmartPid {
     [CmdletBinding()]
-    param (
-        [Parameter(Mandatory = $true)]
-        [ValidateNotNullOrEmpty()]
-        [Object]
-        $SmartPidConnection
-    )
+    param ()
 
     begin { }
 
