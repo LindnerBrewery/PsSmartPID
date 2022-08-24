@@ -19,7 +19,17 @@ $ErrorActionPreference = 'Stop'
 
 # Bootstrap dependencies
 if ($Bootstrap.IsPresent) {
-    Get-PackageProvider -Name Nuget -ForceBootstrap | Out-Null
+    if (-not (Get-PackageProvider -Name "NuGet" -Force -ErrorAction SilentlyContinue)) {
+        Write-Output "Install PackageProvider NuGet"
+        Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force -Scope CurrentUser
+    } else {
+        Write-Output "PackageProvider NuGet already installed."
+    }
+    if (!(Get-PackageSource -name nuget.org -ErrorAction SilentlyContinue)) {
+        #$name = (Get-PackageSource -Location "https://www.nuget.org/api/v2" -ErrorAction SilentlyContinue).providername
+        Write-Host "Registering nuget under the name nuget.org"
+        Register-PackageSource -Trusted -name nuget.org -ProviderName nuget -location "https://www.nuget.org/api/v2"
+    }
     Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
     if ((Test-Path -Path ./requirements.psd1)) {
         if (-not (Get-Module -Name PSDepend -ListAvailable)) {
